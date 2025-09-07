@@ -1,0 +1,17 @@
+{
+  "model_id": "sklearn_logreg",
+  "algorithm": "sklearn_logreg",
+  "metrics": {
+    "accuracy": 0.9999535374868004,
+    "precision": 0.9999070836078591,
+    "recall": 1.0,
+    "f1Score": 0.9999535396454653,
+    "trainingData": "2025-09-07 to 2025-09-07 (1 days)",
+    "validationData": "2025-09-07 to 2025-09-07 (1 days)",
+    "simulationData": "2025-09-07 to 2025-09-07 (1 days)"
+  },
+  "features": [
+    "Id"
+  ],
+  "target": "Id_gt_1.18e+06"
+}

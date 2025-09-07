@@ -1,0 +1,168 @@
+<div class="date-ranges-container">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Date Range Selection</h2>
+    </div>
+
+    <div class="date-ranges-grid">
+      <!-- Training Period -->
+      <div class="date-range-section">
+        <h3>Training Period</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Start Date</label>
+            <input 
+              type="date" 
+              [(ngModel)]="trainingStart"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label>End Date</label>
+            <input 
+              type="date" 
+              [(ngModel)]="trainingEnd"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="period-summary">
+          <span class="days">{{ calculateDays(trainingStart, trainingEnd) }} days</span>
+          <span class="period">{{ trainingStart }} to {{ trainingEnd }}</span>
+        </div>
+      </div>
+
+      <!-- Testing Period -->
+      <div class="date-range-section">
+        <h3>Testing Period</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Start Date</label>
+            <input 
+              type="date" 
+              [(ngModel)]="testingStart"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label>End Date</label>
+            <input 
+              type="date" 
+              [(ngModel)]="testingEnd"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="period-summary">
+          <span class="days">{{ calculateDays(testingStart, testingEnd) }} days</span>
+          <span class="period">{{ testingStart }} to {{ testingEnd }}</span>
+        </div>
+      </div>
+
+      <!-- Simulation Period -->
+      <div class="date-range-section">
+        <h3>Simulation Period</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Start Date</label>
+            <input 
+              type="date" 
+              [(ngModel)]="simulationStart"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label>End Date</label>
+            <input 
+              type="date" 
+              [(ngModel)]="simulationEnd"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="period-summary">
+          <span class="days">{{ calculateDays(simulationStart, simulationEnd) }} days</span>
+          <span class="period">{{ simulationStart }} to {{ simulationEnd }}</span>
+        </div>
+      </div>
+    </div>
+
+    @if (isValidated) {
+      <div class="validation-success">
+        <span class="checkmark">✓</span>
+        <span>Date ranges validated successfully!</span>
+      </div>
+    }
+
+    <!-- Chart Section -->
+    <div class="chart-section">
+      <h3>Selected Date Ranges Summary</h3>
+      <div class="chart-container">
+        <div class="chart">
+          <div class="chart-bars">
+            @for (item of getChartData(); track item.month) {
+              <div class="bar-container">
+                <div 
+                  class="bar" 
+                  [style.height.%]="item.value"
+                  [class]="'bar-' + item.period"
+                ></div>
+                <span class="bar-label">{{ item.month }}</span>
+              </div>
+            }
+          </div>
+          <div class="chart-axes">
+            <div class="y-axis">
+              <span>100</span>
+              <span>80</span>
+              <span>60</span>
+              <span>40</span>
+              <span>20</span>
+              <span>0</span>
+            </div>
+            <div class="x-axis">
+              <span>Timeline (2021)</span>
+            </div>
+          </div>
+        </div>
+        <div class="chart-legend">
+          <div class="legend-item">
+            <div class="legend-color training"></div>
+            <span>Training Period</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color testing"></div>
+            <span>Testing Period</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color simulation"></div>
+            <span>Simulation Period</span>
+          </div>
+        </div>
+      </div>
+
+      @if (summaryUrl) {
+        <div class="server-chart">
+          <h4>Server-generated Summary</h4>
+          <img [src]="summaryUrl" alt="Date ranges summary" style="max-width: 100%; border: 1px solid #eee; border-radius: 8px;" />
+        </div>
+      }
+    </div>
+
+    <div class="action-buttons">
+      <button 
+        class="btn btn-secondary" 
+        (click)="validateRanges()"
+      >
+        Validate Ranges
+      </button>
+      <button 
+        class="btn btn-primary" 
+        [disabled]="!isValidated"
+        (click)="onNext()"
+      >
+        Next
+      </button>
+    </div>
+  </div>
+</div>

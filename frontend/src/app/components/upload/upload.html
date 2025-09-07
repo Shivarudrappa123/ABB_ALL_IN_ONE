@@ -1,0 +1,81 @@
+<div class="upload-container">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Upload Dataset</h2>
+      <span class="card-subtitle">View 1 of 1</span>
+    </div>
+
+    @if (!dataset) {
+      <div class="upload-area">
+        <div class="upload-content">
+          <div class="upload-icon">📁</div>
+          <h3>Upload your dataset</h3>
+          <p>Drag and drop your CSV file here or click to browse</p>
+          <input 
+            type="file" 
+            id="fileInput" 
+            accept=".csv" 
+            (change)="onFileSelected($event)"
+            style="display: none;"
+          />
+          <label for="fileInput" class="btn btn-primary">
+            Choose File
+          </label>
+        </div>
+        
+        @if (isUploading) {
+          <div class="uploading">
+            <div class="spinner"></div>
+            <p>Processing dataset...</p>
+          </div>
+        }
+      </div>
+    }
+
+    @if (dataset) {
+      <div class="dataset-summary">
+        <div class="summary-cards">
+          <div class="summary-card">
+            <div class="card-icon">📄</div>
+            <div class="card-value">{{ dataset.fileName }}</div>
+            <div class="card-label">{{ dataset.fileSize }}</div>
+          </div>
+          
+          <div class="summary-card">
+            <div class="card-icon">📊</div>
+            <div class="card-value">{{ dataset.records.toLocaleString() }}</div>
+            <div class="card-label">Records</div>
+          </div>
+          
+          <div class="summary-card">
+            <div class="card-icon">📋</div>
+            <div class="card-value">{{ dataset.features }}</div>
+            <div class="card-label">Features</div>
+          </div>
+          
+          <div class="summary-card">
+            <div class="card-icon">📈</div>
+            <div class="card-value">{{ dataset.passRate }}%</div>
+            <div class="card-label">Pass Rate</div>
+          </div>
+          
+          <div class="summary-card">
+            <div class="card-icon">📅</div>
+            <div class="card-value">{{ dataset.dateRange.start }}</div>
+            <div class="card-label">{{ dataset.dateRange.end }}</div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <div class="action-buttons">
+      <button 
+        class="btn btn-primary btn-lg" 
+        [disabled]="!dataset"
+        (click)="onNext()"
+      >
+        Next
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,160 @@
+<div class="training-container">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Model Training & Evaluation</h2>
+    </div>
+
+    @if (!isTrained) {
+      <div class="training-section">
+        <div class="training-content">
+          <button 
+            class="btn btn-primary btn-lg training-btn"
+            [disabled]="isTraining"
+            (click)="trainModel()"
+          >
+            @if (isTraining) {
+              <div class="spinner"></div>
+              Training Model...
+            } @else {
+              Train Model
+            }
+          </button>
+        </div>
+      </div>
+    }
+
+    @if (isTrained && modelMetrics) {
+      <div class="training-results">
+        <div class="training-status">
+          <div class="status-badge">
+            <span class="checkmark">✓</span>
+            <span>Model Trained</span>
+          </div>
+        </div>
+
+        <!-- Performance Metrics -->
+        <div class="metrics-grid">
+          <div class="metric-card accuracy">
+            <div class="metric-value">{{ modelMetrics.accuracy }}%</div>
+            <div class="metric-label">Accuracy</div>
+          </div>
+          <div class="metric-card precision">
+            <div class="metric-value">{{ modelMetrics.precision }}%</div>
+            <div class="metric-label">Precision</div>
+          </div>
+          <div class="metric-card recall">
+            <div class="metric-value">{{ modelMetrics.recall }}%</div>
+            <div class="metric-label">Recall</div>
+          </div>
+          <div class="metric-card f1-score">
+            <div class="metric-value">{{ modelMetrics.f1Score }}%</div>
+            <div class="metric-label">F1 Score</div>
+          </div>
+        </div>
+
+        <div class="training-summary">
+          <p>Model trained on {{ modelMetrics.trainingData }} - Validated on {{ modelMetrics.validationData }} - Ready for {{ modelMetrics.simulationData }}</p>
+        </div>
+
+        <!-- Training Metrics Chart -->
+        <div class="chart-section">
+          <h3>Model Performance</h3>
+          <div class="charts-grid">
+            <div class="chart-container">
+              <h4>Training Metrics</h4>
+              <div class="line-chart">
+                <div class="chart-area">
+                  <svg viewBox="0 0 400 200" class="chart-svg">
+                    <defs>
+                      <linearGradient id="accuracyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#10b981;stop-opacity:0.3" />
+                        <stop offset="100%" style="stop-color:#10b981;stop-opacity:0" />
+                      </linearGradient>
+                      <linearGradient id="lossGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#ef4444;stop-opacity:0.3" />
+                        <stop offset="100%" style="stop-color:#ef4444;stop-opacity:0" />
+                      </linearGradient>
+                    </defs>
+                    
+                    <!-- Grid lines -->
+                    <g class="grid">
+                      @for (i of [0, 1, 2, 3, 4]; track i) {
+                        <line x1="40" [attr.y1]="40 + i * 30" x2="360" [attr.y2]="40 + i * 30" stroke="#e5e7eb" stroke-width="1"/>
+                      }
+                    </g>
+                    
+                    <!-- Accuracy line -->
+                    <polyline
+                      fill="none"
+                      stroke="#10b981"
+                      stroke-width="2"
+                      [attr.points]="getAccuracyPoints()"
+                    />
+                    
+                    <!-- Loss line -->
+                    <polyline
+                      fill="none"
+                      stroke="#ef4444"
+                      stroke-width="2"
+                      [attr.points]="getLossPoints()"
+                    />
+                    
+                    <!-- Axes -->
+                    <line x1="40" y1="40" x2="40" y2="190" stroke="#374151" stroke-width="2"/>
+                    <line x1="40" y1="190" x2="360" y2="190" stroke="#374151" stroke-width="2"/>
+                    
+                    <!-- Labels -->
+                    <text x="20" y="45" class="axis-label">1.0</text>
+                    <text x="20" y="75" class="axis-label">0.8</text>
+                    <text x="20" y="105" class="axis-label">0.6</text>
+                    <text x="20" y="135" class="axis-label">0.4</text>
+                    <text x="20" y="165" class="axis-label">0.2</text>
+                    <text x="20" y="195" class="axis-label">0.0</text>
+                  </svg>
+                </div>
+                <div class="chart-legend">
+                  <div class="legend-item">
+                    <div class="legend-line accuracy"></div>
+                    <span>Training Accuracy</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="legend-line loss"></div>
+                    <span>Training Loss</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="chart-container">
+              <h4>Confusion Matrix</h4>
+              @if (cmUrl) {
+                <img [src]="cmUrl" alt="Confusion matrix" style="max-width: 100%; border: 1px solid #eee; border-radius: 8px;" />
+              } @else {
+                <div class="placeholder">Not available</div>
+              }
+            </div>
+
+            <div class="chart-container">
+              <h4>ROC Curve</h4>
+              @if (rocUrl) {
+                <img [src]="rocUrl" alt="ROC curve" style="max-width: 100%; border: 1px solid #eee; border-radius: 8px;" />
+              } @else {
+                <div class="placeholder">Not available</div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <div class="action-buttons">
+      <button 
+        class="btn btn-primary" 
+        [disabled]="!isTrained"
+        (click)="onNext()"
+      >
+        Next
+      </button>
+    </div>
+  </div>
+</div>

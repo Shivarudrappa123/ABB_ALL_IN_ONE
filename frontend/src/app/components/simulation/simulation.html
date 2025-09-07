@@ -1,0 +1,197 @@
+<div class="simulation-container">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Real-Time Prediction Simulation</h2>
+      @if (isSimulationComplete) {
+        <span class="simulation-status">(Simulation Complete)</span>
+      }
+    </div>
+
+    <div class="simulation-controls">
+      @if (!isSimulationComplete) {
+        <button 
+          class="btn btn-primary btn-lg"
+          [disabled]="isSimulationRunning"
+          (click)="startSimulation()"
+        >
+          @if (isSimulationRunning) {
+            <div class="spinner"></div>
+            Running Simulation...
+          } @else {
+            Start Simulation
+          }
+        </button>
+        <button 
+          class="btn btn-secondary btn-lg"
+          [disabled]="!isSimulationRunning"
+          (click)="stopSimulation()"
+          style="margin-left: 12px;"
+        >
+          Stop Simulation
+        </button>
+      } @else {
+        <button 
+          class="btn btn-primary btn-lg"
+          (click)="restartSimulation()"
+        >
+          Restart Simulation
+        </button>
+      }
+      
+      @if (isSimulationComplete) {
+        <div class="simulation-complete">
+          <span class="checkmark">✓</span>
+          <span>Simulation completed!</span>
+        </div>
+      }
+      
+      <p class="simulation-instruction">Click 'Start Simulation' to begin streaming predictions</p>
+    </div>
+
+    <div class="simulation-dashboard">
+      <!-- Real-Time Quality Predictions Chart -->
+      <div class="chart-section">
+        <h3>Real-Time Quality Predictions</h3>
+        <div class="quality-chart">
+          <div class="chart-container">
+            <svg viewBox="0 0 400 200" class="chart-svg">
+              <!-- Grid lines -->
+              <g class="grid">
+                @for (i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track i) {
+                  <line x1="50" [attr.y1]="20 + i * 18" x2="350" [attr.y2]="20 + i * 18" stroke="#e5e7eb" stroke-width="1"/>
+                }
+              </g>
+              
+              <!-- Quality score line -->
+              <polyline
+                fill="none"
+                stroke="#3b82f6"
+                stroke-width="2"
+                [attr.points]="getQualityChartPoints()"
+              />
+              
+              <!-- Axes -->
+              <line x1="50" y1="20" x2="50" y2="200" stroke="#374151" stroke-width="2"/>
+              <line x1="50" y1="200" x2="350" y2="200" stroke="#374151" stroke-width="2"/>
+              
+              <!-- Y-axis labels -->
+              <text x="40" y="25" class="axis-label">100</text>
+              <text x="40" y="43" class="axis-label">90</text>
+              <text x="40" y="61" class="axis-label">80</text>
+              <text x="40" y="79" class="axis-label">70</text>
+              <text x="40" y="97" class="axis-label">60</text>
+              <text x="40" y="115" class="axis-label">50</text>
+              <text x="40" y="133" class="axis-label">40</text>
+              <text x="40" y="151" class="axis-label">30</text>
+              <text x="40" y="169" class="axis-label">20</text>
+              <text x="40" y="187" class="axis-label">10</text>
+              <text x="40" y="205" class="axis-label">0</text>
+              
+              <!-- X-axis label -->
+              <text x="200" y="220" class="axis-label">Time</text>
+            </svg>
+          </div>
+          <div class="chart-legend">
+            <div class="legend-item">
+              <div class="legend-color quality"></div>
+              <span>Quality Score</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prediction Confidence -->
+      <div class="confidence-section">
+        <h3>Prediction Confidence</h3>
+        <div class="confidence-chart">
+          <div class="donut-container">
+            <svg viewBox="0 0 200 200" class="donut-svg">
+              <circle
+                cx="100"
+                cy="100"
+                r="60"
+                fill="none"
+                stroke="#e5e7eb"
+                stroke-width="20"
+              />
+              <circle
+                cx="100"
+                cy="100"
+                r="60"
+                fill="none"
+                stroke="#10b981"
+                stroke-width="20"
+                [attr.stroke-dasharray]="getConfidenceDonutPath()"
+                [attr.stroke-dashoffset]="getConfidenceDonutOffset()"
+                transform="rotate(-90 100 100)"
+              />
+            </svg>
+            <div class="donut-center">
+              <div class="confidence-value">{{ confidencePercentage }}%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Statistics -->
+      <div class="stats-section">
+        <h3>Live Statistics</h3>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value">{{ liveStats.total }}</div>
+            <div class="stat-label">TOTAL</div>
+          </div>
+          <div class="stat-card pass">
+            <div class="stat-value">{{ liveStats.pass }}</div>
+            <div class="stat-label">PASS</div>
+          </div>
+          <div class="stat-card fail">
+            <div class="stat-value">{{ liveStats.fail }}</div>
+            <div class="stat-label">FAIL</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">{{ liveStats.avgConfidence }}%</div>
+            <div class="stat-label">AVG CONF</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Prediction Stream Table -->
+    <div class="prediction-stream">
+      <h3>Live Prediction Stream</h3>
+      <div class="table-container">
+        <table class="prediction-table">
+          <thead>
+            <tr>
+              <th>TIME</th>
+              <th>SAMPLE ID</th>
+              <th>PREDICTION</th>
+              <th>CONFIDENCE</th>
+              <th>TEMPERATURE</th>
+              <th>PRESSURE</th>
+              <th>HUMIDITY</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (data of simulationData; track data.sampleId) {
+              <tr>
+                <td>{{ data.time }}</td>
+                <td>{{ data.sampleId }}</td>
+                <td>
+                  <span class="prediction-badge" [class]="data.prediction.toLowerCase()">
+                    {{ data.prediction }}
+                  </span>
+                </td>
+                <td>{{ data.confidence }}%</td>
+                <td>{{ data.temperature }}°C</td>
+                <td>{{ data.pressure }} hPa</td>
+                <td>{{ data.humidity }}%</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

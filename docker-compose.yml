@@ -1,0 +1,32 @@
+services:
+  training:
+    build:
+      context: .
+      dockerfile: traning/Dockerfile
+    container_name: training
+    ports:
+      - "7000:7000"
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/IntelliInspect.Api/Dockerfile
+    container_name: backend
+    environment:
+      - PythonApi:BaseUrl=http://training:7000
+    depends_on:
+      - training
+    ports:
+      - "5072:5072"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: frontend
+    environment:
+      - PORT=4200
+    depends_on:
+      - backend
+    ports:
+      - "4200:4200"

@@ -1,0 +1,75 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\shivarudra\\OneDrive\\Desktop\\IntelliInspect\\backend\\IntelliInspect.Api\\IntelliInspect.Api.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\shivarudra\\OneDrive\\Desktop\\IntelliInspect\\backend\\IntelliInspect.Api\\IntelliInspect.Api.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\shivarudra\\OneDrive\\Desktop\\IntelliInspect\\backend\\IntelliInspect.Api\\IntelliInspect.Api.csproj",
+        "projectName": "IntelliInspect.Api",
+        "projectPath": "C:\\Users\\shivarudra\\OneDrive\\Desktop\\IntelliInspect\\backend\\IntelliInspect.Api\\IntelliInspect.Api.csproj",
+        "packagesPath": "C:\\Users\\shivarudra\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\shivarudra\\OneDrive\\Desktop\\IntelliInspect\\backend\\IntelliInspect.Api\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\shivarudra\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.OpenApi": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.413/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "1kYuv7EAdUc=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\shivarudra\\OneDrive\\Desktop\\IntelliInspect\\backend\\IntelliInspect.Api\\IntelliInspect.Api.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\shivarudra\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.8\\microsoft.aspnetcore.openapi.8.0.8.nupkg.sha512",
+    "C:\\Users\\shivarudra\\.nuget\\packages\\microsoft.openapi\\1.4.3\\microsoft.openapi.1.4.3.nupkg.sha512"
+  ],
+  "logs": []
+}
